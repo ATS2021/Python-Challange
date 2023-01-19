@@ -10,14 +10,17 @@ months = file_df['Date'].count()
 
 total_revenue = file_df['Profit/Losses'].sum()
 
+#using fillna to have no data with Nan
 profit_changes = file_df['Profit/Losses'].diff()
 file_df["Profit Changes"] = profit_changes.fillna("0")
 avg_change = profit_changes.mean()
 
 file_df = file_df.astype({"Profit Changes": int}, errors='raise')
 
+# sorted the dataframe 
 sorted_file_df = file_df.sort_values("Profit Changes", ascending=False)
 
+#reset index to get the greatest decrease and increase in the 0 index and -1 index spot
 new_index_df = sorted_file_df.reset_index(drop = True)
 
 print("Finanical Analysis")
@@ -28,6 +31,7 @@ print("Average Change : $"+ str(avg_change))
 print(f"Greatest Increase: {new_index_df.iloc[0, 0]} $ {new_index_df.iloc[0, 2]}")
 print(f"Greatest Decrease: {new_index_df.iloc[-1, 0]} $ {new_index_df.iloc[-1, 2]}")
 
+#print into text file
 with open("analysis/analysis_results.txt", "w") as file:
     file.write("Finanical Analysis\n")
     file.write("---------------------------------------------------\n")
